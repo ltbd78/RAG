@@ -1,0 +1,79 @@
+﻿Summary
+
+
+So my background is mathematics in undergrad and statistics in grad.
+
+
+My first job out of graduate school, I worked as a Deep Learning Research Scientist at Boston Fusion for about two years. My role there was mostly working with coding neural networks in pytorch, and the projects varied and covered domains including computer vision, reinforcement learning, and graph inference.
+
+
+My second job, I worked as a data scientist at Capital One under the Customer Resiliency team. Our team was primarily responsible for one product, a recommendation model that recommends dialing schedules to customers who are late on their credit card payments. My role on the team is to research various ways to continually improve pipeline efficiency or model performance.
+* Recommendation system is a contextual multi armed bandit framework that has many submodels; one of which is a classifier that classifies the probability a customer will be late on their payment.
+* One of my contributions is modularizing the end-to-end pipeline such that components are interchangeable similar to sci-kit learn’s Pipeline class, and another is adding an evaluation framework that tracks different performance metrics among a batch of models. The resulting impact is a more streamlined framework allowing developers to quickly test many different combinations of feature transformations, model-type, model-hyperparameters, with a single config file specification and then evaluate the best possible combination in the evaluation framework.
+* Worked closely with the infrastructure team to adapt our code into Kubeflow Pipelines, a platform for MLOps on Kubernetes developed by Google. This allows our code to parallelize many operations on cloud resources.
+
+
+Finally at Walmart, since the team is relatively new, my role is to explore various model end-to-end pipelining and deployment strategies. One of such end-to-end solutions is using Kubeflow on Google Cloud’s Vertex AI. So as proof of concept, I wanted to go above and beyond and decided to deploy a complex model. GPT was the perfect choice as it is a large deep learning model, more difficult to build from scratch compared with traditional sci-kit learn models, and requires an additional GPU resource to train effectively.
+
+
+Very recently, I’ve started working on a newer project involving RAG
+
+
+Why switch / leave
+
+
+So I love my team and the work I’m doing feels impactful, but I realized I don’t like the location. I want to spend my 20s-30s in a big city.
+
+
+[multi] Favorite projs
+* Learn stable diffusion from scratch and deploy to a raspberry pi server on prem to showcase
+* Goal: learn recommender system, ideally in a big company
+
+
+So I have 3 favorite projects, GPT, my portfolio website, and RL framework. All 3 can be found on my GitHub. The reason why they are my favorite is because they are what I built from scratch. So 
+* curiosity, research detail, understanding why things work (docker, gcp, etc…)
+* Senior level mentor staff level
+* 
+
+[conflicts] conflict with coworkers
+* No major conflicts as generally my personality is to avoid or mitigate conflict; however, I do voice my opinions professionally if there is a design decision I disagree with
+* Walmart no actual conflicts since team is just me and my boss and we understand each other really well
+* In Capital One, had some minor conflicts
+* A majority of our project config was written in yaml which had a lot of parsing problems that there’s even a whole website called noyaml.com dedicated listing all its flaws. Our yaml configs would occasionally cause unit tests to fail due to parsing errors, soI proposed using toml as an alternative, but my manager disagreed at the time due to it requiring a lot of refactoring and there were other priorities. This made sense so I agreed. Eventually when priorities lessened, I brought it up again with more evidence on why we should take this refactor initiative. This managed to convince my manager who actually encouraged me to present to a wider audience on my findings and resulted in a refactor that was standardized as best practice.
+* A similar story also when we were choosing a package environment manager; the precedent was pipenv but I suggested poetry. During my research, I managed to find a security vulnerability where pipenv was installing public pre-commit libraries to the environment bypassing our internal repository since the config wasn’t set. I flagged this and it was patched by a standardization team who added the config to the cookiecutter templates to the repo.
+* First one was when we were making a internal kalman filter library, there was a design choice where my boss preferred using pandas where I preferred numpy; so we opened a discussion where we both listed pros and cons of the library, and since there was no impact to stakeholders, I just yielded
+* Disagree with repo structure; Propose mvp process; disagree i move on (agreeable)
+* * * * Side project in which i was a lead (unmotivated friends; interested, catered toward their skillset; hand holding; give profit share)
+
+
+[challenges] overcoming difficult challenges
+* Boston Fusion some of my most difficult challenges was gaining domain expertise on new projects. There was limited mentorship, so it taught me how to self-learn and research independently.
+   * For the project of controlling UAVs on missions, it required me to pick up robotics programming with ROS and reinforcement learning. I found an online course to learn robotics and followed a university lecture to learn reinforcement learning.
+   * There was another project that challenged me in that it required making recommendations on a graph type problem (moving/deploying troops among territories); for this I learned graph neural networks by reading tom kipf’s graph convolutional network paper and I adapted a contexualized bandit on the problem; however, the gcn paper only covered node-level inference and not graph-level so I researched about aggregation functions and prototyped a few network architectures and eventually got everything to work
+* Capital One
+   * [Repo was several years old and bad]; One of my contributions is modularizing the end-to-end pipeline such that components are interchangeable similar to sci-kit learn’s Pipeline class, and another is adding an evaluation framework that tracks different performance metrics among a batch of models. The resulting impact is a more streamlined framework allowing developers to quickly test many different combinations of feature transformations, model-type, model-hyperparameters, with a single config file specification and then evaluate the best possible combination in the evaluation framework.
+* Walmart; both the team and organization I joined was very new, less than a year old so while there was less direction, there were a lot of exploration opportunities; there was technically fronts I tackled when I joined–one was standardizing an end-to-end training to deployment process and another is how we can leverage Gen AI to make a chatbot for internal training procedures.
+   * For the former there wasn’t a well documented standardized process for deploying ML models. People were using different services like azure and gcp, data sources existed in different locations, and the model training process was using airflow to execute jupyter notebooks. So knowing that GCP  has a suite of tools that all exist in one place, my first task is showing how to standardize everything from training to deployment to GCP, particularly Vertex AI. To make the workflow as comprehensive as possible, I decided to showcase how to deploy a complicated model, GPT, from scratch. This was an intensive process that involved data and model artifact storage and transfer, model pipelining with Kubeflow, containerization and versioning, and deployment (Since it was a side project of mine at the time, a portion of the code is available on my GitHub…) However, it was highly successful as more people attended and actively listened to my presentation; and several had followed up with me offline to learn more.
+* The second project I had was to come up with a solution to leverage Gen AI to make a chatbot for internal training procedures. At that time I did not know anything about RAG (Retrieval Augmented Generation) so I researched blindly. Thankfully from my knowledge of GPT, I knew that aspect was necessary. I wondered if it was possible to fine tune it; however I realized that it was not feasible as it would be difficult to update to the documents and refinetune. So knowing GPT has the capability to do zero-shot inference, meaning I can give it a context and it can regurgitate the answer, this translates the problem to how can I best summarize a ton of internal documents to a fixed token window for GPT? After researching models on huggingface, I came across SBERT and BART which is a summarizer; but even then it would be difficult to fit thousands of documents into it as well. This is when I eventually learned about RAG that leverages a vector database for fast retrieval of only relevant document segments and the library langchain; so I made a quick PoC showing the feasibility. Then my boss came with a new challenge, which is incorporating images
+* Document processing problem -> explain rag / vector stores / jkl; -> explain bert/bart -> explain images -> explain reading img2text paper
+* Walmart new team, not a lot of direction (RAG, investigate existing solutions)
+
+
+* Technical difficult time: (first learning anything (gpt), tons of technical details dont understand: chatgpt, stackoverflow, youtube, forums
+* Boston fusion ROS new to that; initiative on tutorial
+* Capital one existing code base, messy (manager agreed, asked for opinions on refactoring saw I had experience)
+* Walmart, new to deployment picked up docker, GCP, nlp
+* Learning LeetCode
+* 
+
+[strengths]
+* curiosity -> strong research/self-learning abilities -> implement anything from scratch -> website, gpt, attention mech, graph
+* Large skillset; Backend, dataanalyst feature prep, datascience model theory, ml engineer deployment, and frontend gui
+* organization
+
+
+Weaknesses
+* curiosity -> side track -> enjoy reinventing the wheel for learning purposes (rl library, attention mech); (back, refusal to memorize theorems unless i can prove)
+
+
+Salary expectations
